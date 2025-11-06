@@ -1,22 +1,37 @@
 package org.emp.gl.core.launcher;
 
-import org.emp.gl.clients.Horloge ;
+// 1. Importer l'interface et l'implémentation du service..........................
+import org.emp.gl.time.service.impl.DummyTimeServiceImpl;
+import org.emp.gl.timer.service.TimerService;
+
+// 2. Importer notre nouvelle classe d'horloge graphique................................
+import org.emp.gl.clients.HorlogeGraphique;
 
 /**
- * Hello world!
- *
+ * Classe principale pour lancer l'application .................
  */
 public class App {
 
     public static void main(String[] args) {
+        
+        // 1. Instancier le service....................................
+        // Le service démarre son propre thread (Timer)..........................
+        // dès son instanciation.......................................
+        TimerService timer = new DummyTimeServiceImpl();
 
-        testDuTimeService();
+        // 2. Lancer l'horloge graphique..................................
+        // On lui passe un titre ("Horloge Bonus") et le service.........................
+        // La fenêtre (JFrame) gère son propre cycle de vie.........................
+        new HorlogeGraphique("Horloge Bonus", timer);
+        
+        // Nous n'avons pas besoin d'appeler d'autres tests..........................................
+        // L'application restera active grâce au thread du Timer...................................
+        // et au thread de l'interface graphique (Swing)...............................
     }
 
-    private static void testDuTimeService() {
-        Horloge horloge = new Horloge("Num 1") ;
-    }
-
+    /**
+     * Utilitaire pour nettoyer la console (non utilisé dans cette version).......................
+     */
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
